@@ -1,0 +1,35 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: recsys-gateway
+  namespace: recsys-prod
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "*"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: recsys-routes
+  namespace: recsys-prod
+spec:
+  hosts:
+  - "*"
+  gateways:
+  - recsys-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /events
+    route:
+    - destination:
+        host: event-service
+        port:
+          number: 80

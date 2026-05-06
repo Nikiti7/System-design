@@ -1,0 +1,48 @@
+- name: Deploy Kafka Infrastructure
+  hosts: localhost
+  connection: local
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+  tasks:
+    - name: Create Namespace for Kafka
+      kubernetes.core.k8s:
+        name: kafka
+        kind: Namespace
+        state: present
+
+    - name: Install Strimzi Operator
+      kubernetes.core.k8s:
+        src: https://strimzi.io/install/latest?namespace=kafka
+        state: present
+        namespace: kafka
+
+    - name: Wait for Strimzi Operator to be ready
+      pause:
+        seconds: 60
+
+    - name: Deploy Kafka Cluster Instance
+      kubernetes.core.k8s:
+        definition:
+          apiVersion: kafka.strimzi.io/v1beta2
+          kind: Kafka
+          metadata:
+            name: my-cluster
+            namespace: kafka
+          spec:
+            kafka:
+              version: 3.5.0
+              replicas: 1
+              listeners:
+                - name: plain
+                  port: 9092
+                  type: internal
+                  tls: false
+              config:
+                offsets.topic.replication.factor: 1
+                transaction.state.log.replication.factor: 1
+              storage:
+                type: ephemeral
+            zookeeper:
+              replicas: 1
+              storage:
+                type: ephemeral
