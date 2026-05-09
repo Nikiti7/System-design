@@ -16,3 +16,9 @@ spec:
     automated:
       prune: true
       selfHeal: true
+  ignoreDifferences:
+    - group: kafka.strimzi.io
+      kind: Kafka
+      jsonPointers:
+        - /status
+        - /spec/entityOperator
