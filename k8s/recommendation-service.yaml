@@ -14,13 +14,13 @@ spec:
         app: recommendation-service
     spec:
       containers:
-      - name: recommendation-service
-        image: nikolayoleynik/recommendation-service:latest
-        env:
+        - name: recommendation-service
+          image: nikolayoleynik/recommendation-service:latest
+          env:
             - name: MONGO_URL
               value: "mongodb://mongodb.recsys-prod.svc.cluster.local:27017/recsys"
-        ports:
-        - containerPort: 80
+          ports:
+            - containerPort: 80
 ---
 apiVersion: v1
 kind: Service
@@ -31,5 +31,5 @@ spec:
   selector:
     app: recommendation-service
   ports:
-  - port: 80
-    targetPort: 80
+    - port: 80
+      targetPort: 80
