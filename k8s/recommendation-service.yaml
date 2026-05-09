@@ -16,6 +16,9 @@ spec:
       containers:
       - name: recommendation-service
         image: nikolayoleynik/recommendation-service:latest
+        env:
+            - name: MONGO_URL
+              value: "mongodb://mongodb.recsys-prod.svc.cluster.local:27017/recsys"
         ports:
         - containerPort: 80
 ---
