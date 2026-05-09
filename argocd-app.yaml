@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: recsys-infrastructure
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: "https://github.com/Nikiti7/System-design.git"
+    targetRevision: HEAD
+    path: ansible
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: recsys-prod
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
