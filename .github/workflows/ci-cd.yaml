@@ -1,0 +1,29 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build Docker Image
+        run: |
+          docker build -t my-registry/event-service:${{ github.sha }} .
+
+      - name: Push to Registry
+        run: |
+          echo "Pushing image to local registry..."
+
+      - name: Update Helm Manifests
+        run: |
+          sed -i 's/tag: .*/tag: "${{ github.sha }}"/' charts/event-service/values.yaml
+          git config --global user.name "CI-Bot"
+          git config --global user.email "bot@recsys.local"
+          git add .
+          git commit -m "chore: update image tag to ${{ github.sha }} [skip ci]"
+          git push

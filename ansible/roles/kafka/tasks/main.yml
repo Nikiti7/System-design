@@ -1,0 +1,10 @@
+---
+- name: Deploy Strimzi Kafka Operator
+  kubernetes.core.k8s:
+    state: present
+    src: https://strimzi.io/install/latest?namespace=recsys-prod
+
+- name: Create Kafka Cluster instance
+  kubernetes.core.k8s:
+    state: present
+    definition: "{{ lookup('file', 'kafka-cluster-instance.yaml') }}"

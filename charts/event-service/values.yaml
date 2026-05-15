@@ -1,0 +1,14 @@
+replicaCount: 1
+image:
+  repository: my-registry/event-service
+  tag: "latest"
+
+env:
+  KAFKA_BOOTSTRAP_SERVERS: "kafka-cluster-kafka-bootstrap.recsys-prod.svc:9092"
+  MONGO_URL: "mongodb://admin:password123@mongodb:27017"
+  TOPIC_NAME: "user-events"
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi

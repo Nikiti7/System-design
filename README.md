@@ -1,17 +1,12 @@
-# Recommendation System
+# AI Recommendation System Platform (K8s + Istio + GitOps)
 
-## Запуск
+Платформа для системы рекомендаций, развернутая в кластере Kubernetes с использованием Service Mesh и принципов GitOps.
 
-docker-compose up -d
+## Архитектура
 
-## Сервисы
-
-- Event Service: 8001
-- Feature Service: 8002
-- Recommendation Service: 8003
-
-## Тест
-
-1. POST /events
-2. GET /features/{user_id}
-3. GET /recommendations/{user_id}
+- **Infrastructure:** Minikube (K8s), Cilium CNI.
+- **GitOps:** ArgoCD (App of Apps pattern).
+- **Service Mesh:** Istio (Circuit Breaker, Rate Limiting, mTLS).
+- **IaC:** Terraform (Namespaces, RBAC, Secrets).
+- **Configuration:** Ansible (Kafka & MongoDB deployment).
+- **Observability:** Prometheus, Grafana, Kiali.
